@@ -1,0 +1,6 @@
+node_modules/
+tex/
+renders/
+scene.blend*
+sound.wav
+film.mp4

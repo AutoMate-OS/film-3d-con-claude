@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  /* Icona di un tasto, 256x256 trasparente, bianca: il colore lo dà il materiale in Blender */
+  html, body { margin: 0; width: 256px; height: 256px; background: transparent; }
+  svg { width: 256px; height: 256px; }
+  * { stroke: #fff; fill: none; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+  .f { fill: #fff; stroke: none; }
+  text { fill: #fff; stroke: none; font: 900 150px Lato, Arial, sans-serif; }
+</style></head>
+<body><svg id="s" viewBox="0 0 256 256"></svg>
+<script>
+  const I = {
+    Selezione: '<path class="f" d="M80 50 L80 200 L118 162 L144 214 L168 202 L142 150 L194 150 Z"/>',
+    Mano: '<path d="M90 140 V70 M118 130 V52 M146 130 V60 M174 140 V82 M90 140 C80 120 60 130 70 150 L104 206 H170 L186 150 V100"/>',
+    Testo: '<text x="128" y="182" text-anchor="middle">T</text>',
+    Rettangolo: '<rect x="56" y="76" width="144" height="104" rx="8"/>',
+    Penna: '<path d="M128 44 L176 140 L128 212 L80 140 Z M128 44 V150"/><circle cx="128" cy="160" r="10" class="f"/>',
+    Bagliore: '<circle cx="128" cy="128" r="36"/><path d="M128 40 V64 M128 192 V216 M40 128 H64 M192 128 H216 M66 66 L82 82 M174 174 L190 190 M66 190 L82 174 M174 82 L190 66"/>',
+    Posizione: '<path d="M128 44 V212 M44 128 H212 M128 44 L106 66 M128 44 L150 66 M128 212 L106 190 M128 212 L150 190 M44 128 L66 106 M44 128 L66 150 M212 128 L190 106 M212 128 L190 150"/>',
+    Zoom: '<circle cx="112" cy="112" r="56"/><path d="M152 152 L206 206"/>',
+  };
+  document.getElementById('s').innerHTML = I[location.hash.slice(1)] || '';
+</script></body></html>

@@ -1,0 +1,9 @@
+Fammi un film 3D di 12 secondi in Blender, verticale 1080x1920 a 30 fotogrammi al secondo, tutto in codice e senza mai aprire Blender. Un robottino blu a blocchi, con la lettera A sul petto, salta sui tasti 3D della barra strumenti di un editor video (Testo, Rettangolo, Penna, Bagliore, Posizione): ogni tasto si abbassa quando ci atterra e la sua icona si accende di blu. Poi i pannelli dell'editor si accendono uno dopo l'altro, il robottino fa un salto grande sull'anteprima e dietro di lui sale il titolo FATTO CON CLAUDE.
+Lavora così:
+1. Costruisci l'interfaccia dell'editor come pagina HTML (ui.html, 2400x1500 px, tema scuro) e fotografala con Playwright: una versione spenta, i ritagli dei pannelli accesi e un'icona PNG trasparente per ogni tasto.
+2. Metti tutti i tempi (salti, pannelli, titolo, BPM) in un solo file timeline.py.
+3. Scrivi scene.py: costruisce la scena con bpy (interfaccia come texture, tasti 3D con l'icona sopra, robottino con schiacciamento all'atterraggio, camera che lo segue con profondità di campo, luce calda), anima tutto leggendo timeline.py e salva scene.blend.
+4. Scrivi sound.py: sintetizza con numpy una base lo-fi a 120 BPM e un effetto per ogni atterraggio, tasto, pannello e per il titolo, sugli stessi tempi di timeline.py. Niente campioni scaricati.
+5. Renderizza con Cycles da riga di comando (blender -b), prima 5 fotogrammi di prova da guardare, poi tutti.
+6. Unisci fotogrammi e audio con FFmpeg in film.mp4.
+Prima di ogni render guarda i fotogrammi di prova e correggi quello che non va.

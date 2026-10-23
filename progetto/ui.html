@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  /* Interfaccia di un editor video generico, 2400x1500 px = 2,4 x 1,5 m nella scena (1 px = 1 mm) */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 2400px; height: 1500px; background: #101218; font-family: Lato, Arial, sans-serif; color: #c9cdd8; overflow: hidden; }
+  .menu { position: absolute; left: 0; top: 0; width: 2400px; height: 60px; background: #171a22; display: flex; align-items: center; gap: 44px; padding-left: 36px; font-size: 26px; border-bottom: 2px solid #232734; }
+  .menu b { color: #fff; font-weight: 900; letter-spacing: 1px; margin-right: 20px; }
+  .menu b i { color: #4f6bff; font-style: normal; }
+  .tools { position: absolute; left: 0; top: 60px; width: 2400px; height: 90px; background: #13161d; border-bottom: 2px solid #232734; }
+  .slot { position: absolute; top: 12px; width: 124px; height: 66px; border-radius: 14px; background: #0b0d12; box-shadow: inset 0 3px 8px #000; }
+  .panel { position: absolute; background: #161922; border: 2px solid #252a38; border-radius: 10px; }
+  .panel h3 { font-size: 24px; font-weight: 700; color: #e6e9f2; padding: 18px 22px; border-bottom: 2px solid #252a38; }
+  .off .panel > *:not(h3) { visibility: hidden; }
+  .off .panel { background: #12141b; }
+  .off .panel h3 { color: #565c6e; }
+  .row { display: flex; align-items: center; gap: 16px; padding: 14px 22px; font-size: 22px; }
+  .dot { width: 22px; height: 22px; border-radius: 5px; }
+  .preview { left: 540px; top: 170px; width: 1320px; height: 730px; background: #07080b; }
+  .preview .tab { position: absolute; left: 0; top: 0; height: 56px; padding: 14px 22px; font-size: 22px; color: #8fa2ff; border-bottom: 3px solid #4f6bff; }
+  .preview .frame { position: absolute; left: 60px; top: 90px; width: 1200px; height: 590px; border: 2px dashed #2a3040; border-radius: 6px; }
+  .preview .tc { position: absolute; right: 24px; bottom: 14px; font-family: 'Courier New', monospace; font-size: 24px; color: #7d86a0; }
+  .search { margin: 18px 22px; height: 52px; border-radius: 10px; background: #0d0f14; border: 2px solid #2c3242; font-size: 22px; padding: 12px 16px; color: #e6e9f2; }
+  .fx { padding: 10px 22px 10px 40px; font-size: 22px; }
+  .fx.on { background: #2a47d6; color: #fff; margin: 0 22px; border-radius: 8px; padding-left: 18px; }
+  .timeline { left: 20px; top: 920px; width: 2360px; height: 560px; }
+  .ruler { position: absolute; left: 400px; right: 20px; top: 66px; height: 36px; border-bottom: 2px solid #2a3040; font-family: 'Courier New', monospace; font-size: 20px; color: #6d7590; }
+  .ruler span { position: absolute; top: 4px; }
+  .layer { position: absolute; left: 0; width: 2356px; height: 64px; border-bottom: 2px solid #1e2230; }
+  .layer .name { position: absolute; left: 22px; top: 18px; font-size: 22px; }
+  .bar { position: absolute; top: 12px; height: 40px; border-radius: 8px; }
+  .playhead { position: absolute; left: 820px; top: 60px; width: 4px; height: 490px; background: #4f6bff; }
+  .playhead::before { content: ''; position: absolute; left: -14px; top: -6px; width: 32px; height: 24px; background: #4f6bff; border-radius: 4px; }
+</style></head>
+<body>
+<div class="menu"><b>STUDIO<i>.</i></b><span>File</span><span>Modifica</span><span>Composizione</span><span>Livello</span><span>Effetti</span><span>Animazione</span><span>Vista</span><span>Finestra</span><span>Aiuto</span></div>
+<div class="tools" id="tools"></div>
+
+<div class="panel" style="left:20px;top:170px;width:500px;height:730px">
+  <h3>Progetto</h3>
+  <div class="row"><div class="dot" style="background:#4f6bff"></div>Composizione principale</div>
+  <div class="row"><div class="dot" style="background:#e0a63a"></div>robottino.blend</div>
+  <div class="row"><div class="dot" style="background:#3fbf8f"></div>musica.wav</div>
+  <div class="row"><div class="dot" style="background:#c0587a"></div>effetti-sonori.wav</div>
+  <div class="row"><div class="dot" style="background:#8d6be8"></div>titolo.png</div>
+</div>
+
+<div class="panel preview"><div class="tab">Composizione principale</div><div class="frame"></div><div class="tc">0:00:09:05</div></div>
+
+<div class="panel" style="left:1880px;top:170px;width:500px;height:730px">
+  <h3>Effetti e preset</h3>
+  <div class="search">bagliore</div>
+  <div class="fx">▸ Preset animazione</div>
+  <div class="fx">▾ Stilizza</div>
+  <div class="fx on">Bagliore</div>
+  <div class="fx">▸ Sfocatura</div>
+  <div class="fx">▸ Colore</div>
+  <div class="fx">▸ Distorsione</div>
+  <div class="fx">▸ Transizioni</div>
+</div>
+
+<div class="panel timeline">
+  <h3>Linea temporale</h3>
+  <div class="ruler"><span style="left:0">0s</span><span style="left:20%">2s</span><span style="left:40%">4s</span><span style="left:60%">6s</span><span style="left:80%">8s</span></div>
+  <div class="layer" style="top:110px"><div class="name">Titolo</div><div class="bar" style="left:1500px;width:820px;background:#c0587a"></div></div>
+  <div class="layer" style="top:176px"><div class="name">Robottino</div><div class="bar" style="left:400px;width:1920px;background:#e0b03a"></div></div>
+  <div class="layer" style="top:242px"><div class="name">Bagliore</div><div class="bar" style="left:900px;width:1100px;background:#3fbf8f"></div></div>
+  <div class="layer" style="top:308px"><div class="name">Pannelli</div><div class="bar" style="left:1180px;width:1140px;background:#8d6be8"></div></div>
+  <div class="layer" style="top:374px"><div class="name">Musica</div><div class="bar" style="left:400px;width:1920px;background:#c9b48f"></div></div>
+  <div class="playhead"></div>
+</div>
+<script>
+  // Fessure dei tasti: i tasti veri sono oggetti 3D in Blender, centri x = 600 + 150*i, y = 105
+  const t = document.getElementById('tools');
+  for (let i = 0; i < 8; i++) { const s = document.createElement('div'); s.className = 'slot'; s.style.left = (600 + 150 * i - 62) + 'px'; t.appendChild(s); }
+  if (location.hash === '#off') document.body.classList.add('off');
+</script>
+</body></html>

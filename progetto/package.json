@@ -1,0 +1,6 @@
+{
+  "name": "film-3d-con-claude",
+  "private": true,
+  "type": "module",
+  "dependencies": { "playwright": "^1.48.0" }
+}
