@@ -1,9 +1,9 @@
-Fammi un film 3D di 12 secondi in Blender, verticale 1080x1920 a 30 fotogrammi al secondo, tutto in codice e senza mai aprire Blender. Un robottino blu a blocchi, con la lettera A sul petto, salta sui tasti 3D della barra strumenti di un editor video (Testo, Rettangolo, Penna, Bagliore, Posizione): ogni tasto si abbassa quando ci atterra e la sua icona si accende di blu. Poi i pannelli dell'editor si accendono uno dopo l'altro, il robottino fa un salto grande sull'anteprima e dietro di lui sale il titolo FATTO CON CLAUDE.
+Fammi il donut di Blender tutto in codice, senza mai aprire Blender: uno script Python (bpy) che costruisce la scena e la anima, verticale 1080x1920 a 30 fotogrammi al secondo, 12 secondi.
+La scena: un piatto di ceramica su un fondo azzurro chiaro, luce calda da studio (chiave calda, controluce, poco riempimento), profondità di campo.
+L'animazione, un pezzo alla volta: piatto vuoto; la ciambella cresce sul piatto con un piccolo rimbalzo; la glassa cola dall'alto e forma gocce irregolari sui bordi (non deve coprire tutta la ciambella, l'impasto si deve vedere sotto); gli zuccherini cadono uno per uno sulla glassa; poi il donut gira lentamente.
 Lavora così:
-1. Costruisci l'interfaccia dell'editor come pagina HTML (ui.html, 2400x1500 px, tema scuro) e fotografala con Playwright: una versione spenta, i ritagli dei pannelli accesi e un'icona PNG trasparente per ogni tasto.
-2. Metti tutti i tempi (salti, pannelli, titolo, BPM) in un solo file timeline.py.
-3. Scrivi scene.py: costruisce la scena con bpy (interfaccia come texture, tasti 3D con l'icona sopra, robottino con schiacciamento all'atterraggio, camera che lo segue con profondità di campo, luce calda), anima tutto leggendo timeline.py e salva scene.blend.
-4. Scrivi sound.py: sintetizza con numpy una base lo-fi a 120 BPM e un effetto per ogni atterraggio, tasto, pannello e per il titolo, sugli stessi tempi di timeline.py. Niente campioni scaricati.
-5. Renderizza con Cycles da riga di comando (blender -b), prima 5 fotogrammi di prova da guardare, poi tutti.
-6. Unisci fotogrammi e audio con FFmpeg in film.mp4.
-Prima di ogni render guarda i fotogrammi di prova e correggi quello che non va.
+1. In cima al file metti due variabili: GLASSA (cioccolato, pistacchio, fragola, vaniglia) e ZUCCHERINI (quanti). Tutto il resto le legge, così per cambiare il donut basta cambiare quelle due righe.
+2. La glassa costruiscila sulla forma della ciambella, colonna per colonna, così il bordo e le gocce vengono lisci; la colata animala con forme in sequenza (shape key assolute) che scendono lungo la ciambella.
+3. Tre camere: una ampia, una macro bassa e una dall'alto.
+4. Prima fammi una tavola di fotogrammi di prova con EEVEE (piatto vuoto, glassa a metà, donut finito, macro) e correggi quello che non sembra un donut vero; poi renderizza con Cycles da riga di comando (blender -b), sulla GPU se ce l'hai.
+5. Unisci i fotogrammi con FFmpeg in donut.mp4.

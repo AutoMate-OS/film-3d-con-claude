@@ -1,56 +1,39 @@
-# Un film 3D con Claude, senza aprire Blender
+# Il donut di Blender, fatto da Claude senza aprire Blender
 
-Un'animazione 3D di 12 secondi (verticale 1080x1920) fatta **solo con il codice**: un robottino blu salta sui tasti di un editor video, i pannelli si accendono, sale il titolo "FATTO CON CLAUDE". Claude ha scritto i programmi, Blender li esegue da riga di comando senza aprire la sua finestra, la musica e gli effetti sono sintetizzati con numpy, FFmpeg unisce tutto.
+Il donut del tutorial che fanno tutti quando iniziano Blender, fatto **solo con il codice**: Claude scrive uno script Python, Blender lo esegue da riga di comando senza aprire la sua finestra, e la scena si costruisce da sola (la ciambella cresce, la glassa cola con le gocce, gli zuccherini cadono uno per uno). Se non ti piace, lo chiedi a parole: con *"glassa al pistacchio, più zuccherini"* Claude ha cambiato 2 righe in 18 secondi.
 
-Il nostro render: 360 fotogrammi su un processore AMD Ryzen 7 7700 (8 core), **senza scheda video**.
+I nostri numeri (24/10/2026): 200 fotogrammi 1080x1920 con Cycles in 3 minuti e 52 secondi su una NVIDIA RTX PRO 6000; prove veloci con EEVEE su processore senza scheda video, circa 10 secondi a fotogramma.
 
 ## Come si usa
 
 1. Scarica questo repository (**Code → Download ZIP**, oppure `git clone`).
-2. Installa **Blender** (4.5 o più recente, gratuito da blender.org), **Python 3 con numpy**, **Node.js** e **FFmpeg**.
-3. Apri la cartella con **Claude Code** (o Codex) e scrivi: **"Fammi il film 3D"**. Parte la skill `film-3d-blender` (in Codex: `AGENTS.md`).
+2. Installa **Blender** (4.5 o più recente, gratuito da blender.org) e **FFmpeg**.
+3. Apri la cartella con **Claude Code** (o Codex) e scrivi: **"Fammi il donut"**. Parte la skill `film-3d-blender` (in Codex: `AGENTS.md`).
 
-Se vuoi partire da zero, incolla in Claude il prompt di `prompt.txt` in una cartella vuota: è quello che ha generato questi file.
+Se vuoi partire da zero, incolla in Claude il prompt di `prompt.txt` in una cartella vuota.
 
-A mano, dalla cartella `progetto/`:
+A mano, dalla cartella `donut/`:
 
 ```
-npm install && npx playwright install chromium
-node shot.mjs                                   # interfaccia e icone -> tex/
-blender -b --factory-startup -P scene.py        # costruisce scene.blend
-blender -b scene.blend -P render.py -- 1 360    # render dei fotogrammi
-python3 sound.py                                # musica ed effetti -> sound.wav
-./encode.sh                                     # film.mp4
+blender -b -P donut.py -- salva scene.blend                                # costruisce la scena
+blender -b scene.blend -P prova.py -- 50 eroe:60 eroe:100 eroe:300 macro:300   # prove veloci (EEVEE)
+blender -b scene.blend -P shot.py -- costruzione eroe 1 200                  # render (Cycles, GPU se c'è)
+ffmpeg -framerate 30 -i renders/costruzione/f_%04d.png -pix_fmt yuv420p donut.mp4
 ```
+
+Per cambiarlo: in cima a `donut/donut.py` ci sono `GLASSA` (cioccolato, pistacchio, fragola, vaniglia) e `ZUCCHERINI`. Oppure chiedilo a Claude a parole.
 
 ## Cosa c'è dentro
 
 ```
 prompt.txt          il prompt da incollare in Claude
-progetto/
-├── ui.html         l'interfaccia dell'editor (diventa texture)
-├── icons.html      le icone dei tasti
-├── shot.mjs        fotografa interfaccia e icone con Playwright
-├── timeline.py     tutti i tempi: animazione e suoni leggono da qui
-├── scene.py        la scena 3D con l'API Python di Blender
-├── render.py       render di un intervallo di fotogrammi
-├── sound.py        base lo-fi a 120 BPM + effetti, sintetizzati
-└── encode.sh       unisce fotogrammi e audio con FFmpeg
+donut/
+├── donut.py        la scena: piatto, ciambella, glassa che cola, zuccherini, luci, 3 camere
+├── prova.py        fotogrammi di prova veloci con EEVEE (anche in fil di ferro)
+└── shot.py         render di una ripresa con Cycles su GPU, ripartibile
+progetto/           secondo esempio: il robottino che salta sui tasti di un editor (prompt in progetto/prompt-robottino.txt)
 ```
 
-## Consigli
+## Licenza
 
-- Prima di tutto renderizza **5 fotogrammi di prova** (`blender -b scene.blend -P render.py -- 20 330 prova 60`) e guardali.
-- Per cambiare il ritmo cambia solo `timeline.py`: animazione e suoni si spostano insieme.
-- Troppo lento? Abbassa `sc.cycles.samples` in `scene.py`; con una scheda NVIDIA imposta Cycles sulla GPU.
-- Il robottino ha il marchio AutoMate: per i tuoi video fai il tuo personaggio ed evita personaggi o interfacce di marchi altrui.
-
-## Sicurezza
-
-Sono file di testo leggibili: niente rete (a parte l'installazione di Playwright), niente dati personali. Gli script scrivono solo dentro `progetto/` (`tex/`, `renders/`, `scene.blend`, `sound.wav`, `film.mp4`).
-
-## Vuoi che lo facciamo noi?
-
-Video, automazioni e agenti AI costruiti sulla tua azienda: **alex@automate-pro.com** · **automate-pro.com**.
-
-Licenza MIT.
+MIT. Il tutorial originale del donut è di Blender Guru (blenderguru.com).
